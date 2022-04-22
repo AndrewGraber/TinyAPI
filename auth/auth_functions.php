@@ -16,22 +16,6 @@ define("SCOPE_NOT_FOUND", 11);
 define("SCOPE_NOT_ALLOWED", 12);
 
 /**
- * Uses phpCAS to check for a cookie containing a CAS session. If none is found, it will force login through CAS page and redirect back to current page.
- * 
- * @return string The username of the employee who just logged into CAS
- */
-function cas_authenticate() {
-	phpCAS::setDebug();
-    // initialize phpCAS
-    phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas');
-    phpCAS::setNoCasServerValidation();
-    phpCAS::forceAuthentication();
-    $user = phpCAS::getUser();
-	$puid = phpCAS::getAttribute('puid');
-	return $user;
-}
-
-/**
  * Takes a temp_key and user_id and checks to see if a valid temp_key exists with those parameters.
  * This function is used by the auth/get_token endpoint to exchange a temp_key for a more permanent token.
  * 
