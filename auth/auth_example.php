@@ -30,9 +30,8 @@ ini_set('display_startup_errors', TRUE); // */
     session_start();
 
     $temp_key = $redirect = "";
-    $user_id = cas_authenticate();
-    if(isset($user_id) && $_SERVER["REQUEST_METHOD"] == "POST") { //If button was clicked...
-        $temp_key = create_access_token($user_id, null, "TEMP"); //Create a temp_key
+    if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['user_id'] != "") { //If button was clicked...
+        $temp_key = create_access_token($_POST['user_id'], null, "TEMP"); //Create a temp_key
         $redirect = $_POST['redirect'];
         session_unset();
         session_destroy();
@@ -42,7 +41,7 @@ ini_set('display_startup_errors', TRUE); // */
 <html>
 <head>
     <title>
-        Login to ITaP Labs API
+        TinyAPI Authorization
     </title>
     <style>
         .button-popup {
@@ -77,13 +76,16 @@ ini_set('display_startup_errors', TRUE); // */
 <body style='background-color: #aaaaaa'>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <input type="text" style="display: none;" name="redirect" value="<?php echo $_GET['redirect']; ?>">
+        <input type="text" style="display: none;" name="user_id" value="<?php echo $_POST['user_id']; ?>">
         <input type="submit" class="button-popup" value="Click here to Login to ITaP Labs">
     </form>
     <div id="disclaimer">
         <p>
-            By clicking this button, you agree to allow ITaP Labs to store cookies in your browser. The security of your information is very important to us and
-            we have taken measures to make it more secure. Everything you do on the ITaP Labs tools is encrypted and secure. You are seeing this page, because it
-            allows us to confirm your identity through CAS authentication.
+            Clicking the button above will use the user_id provided in the POST data to generate a temporary token
+            and redirect you to the url provided in the query string value 'redirect', which is set by whatever site
+            sent you to this one. The temporary token is valid for up to 60 seconds and will be returned in the POST
+            data as 'temp_key'. Once the redirect is complete, the site that made the request for the temporary key
+            can then make a request to get_token.php to trade the temporary key for an access token that lasts 24 hours.
         </p>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
