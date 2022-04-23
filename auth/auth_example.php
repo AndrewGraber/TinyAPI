@@ -45,12 +45,10 @@ ini_set('display_startup_errors', TRUE); // */
     </title>
     <style>
         .button-popup {
-            height: 20%;
-            top: 40%;
-            left: 20%;
+            height: 100%;
             background-color: #d19f2b;
             font-weight: bold;
-            font-size: 3em;
+            font-size: 2em;
             color: #e0e0e0;
             border: solid 3px #bf8b13;
             transition: border 0.5s, background-color 0.5s;
@@ -80,7 +78,6 @@ ini_set('display_startup_errors', TRUE); // */
 
         div#info {
             flex: 0.25;
-            height: 100%;
             text-align: center;
             color: #606060;
         }
