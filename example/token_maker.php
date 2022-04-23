@@ -18,6 +18,15 @@ if(isset($_GET['temp_key'])) {
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
         .circle-wrap .circle .mask,
         .circle-wrap .circle .fill {
             width: 100px;
@@ -79,6 +88,7 @@ if(isset($_GET['temp_key'])) {
             background-color: #5e89ff;
             color: #324987;
             cursor: pointer;
+            margin-bottom: 1em;
         }
 
         .bottom-line {
