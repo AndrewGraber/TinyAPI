@@ -111,7 +111,7 @@ if(isset($_GET['temp_key'])) {
         }
 
         .bottom-line {
-            width: 80%;
+            width: 90%;
             border-bottom: 1px solid #dedede;
         }
 
