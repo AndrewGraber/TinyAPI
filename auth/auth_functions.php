@@ -20,7 +20,7 @@ define("SCOPE_NOT_ALLOWED", 12);
  * This function is used by the auth/get_token endpoint to exchange a temp_key for a more permanent token.
  * 
  * @param string $temp_key The temp_key the user provided in their request. Should start with 'TEMP-' and have 64 randomly generated letters and numbers after
- * @param string $user_id The user_id of the employee who holds the temp_key and wants to exchange for a token.
+ * @param string $user_id The user_id of the user who holds the temp_key and wants to exchange for a token.
  * @return boolean True if the temp_key exists and is not expired. False otherwise.
  */
 function check_temp_key($temp_key, $alias) {
@@ -35,7 +35,7 @@ function check_temp_key($temp_key, $alias) {
  * filtering specifically for records that contain the user's user_id. This is for determining what scope should be used for this request.
  * 
  * Loops through for each request parameter. Then, when it finds one that is a filter statement, loops through for each 'self_field' and checks to see if
- * the filter is for that field and for the given user (i.e. the request is filtering by employee for themselves).
+ * the filter is for that field and for the given user (i.e. the request is filtering by user for themselves).
  * 
  * @param \api\objects\Request $request The request that was sent to the endpoint that called this function
  * @param string $user The user_id of the person who made the request
@@ -206,7 +206,7 @@ function get_largest_spec_auth($resource, $action) {
  */
 function check_scope_access($user, $scopes, &$err, &$ret_scope) {
 	$conn = new Database();
-	$user_exists = $conn->select_first("SELECT auth_level FROM Employees WHERE user_id = '$user';", $res);
+	$user_exists = $conn->select_first("SELECT auth_level FROM Users WHERE user_id = '$user';", $res);
 	if($user_exists) {
 		$auth = $res['auth_level'];
 		foreach($scopes as $scope) {
@@ -339,7 +339,7 @@ function create_access_token($user, $scopes, $type) {
 		$conn->conn->query("INSERT INTO APITokens (user_id, Token, Expiration) VALUES ('$user', '$token', '$expiration');");
 		$token_id = $conn->conn->insert_id;
 		if(count($scopes) == 1 && $scopes[0] == "available") {
-			$ret = $conn->select_first("SELECT auth_level FROM Employees WHERE user_id = '$user';", $res);
+			$ret = $conn->select_first("SELECT auth_level FROM Users WHERE user_id = '$user';", $res);
 			$auth = $res['auth_level'];
 			$rows = $conn->select("SELECT * FROM APIScopes WHERE ReqAuth <= $auth");
 			foreach($rows as $row) {
