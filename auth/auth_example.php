@@ -30,14 +30,16 @@ ini_set('display_startup_errors', TRUE); // */
     session_start();
 
     $temp_key = $redirect = "";
+
     $service_name = "NULL";
     if(isset($_POST['service_name'])) {
         $service_name = $_POST['service_name'];
-    } else if(isset($_GET['redirect']))) {
+    } else if(isset($_GET['redirect'])) {
         $host = parse_url($_GET['redirect'], $PHP_URL_HOST);
         str_replace("www.", "", $host);
         $service_name = $host;
     }
+
     if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['user_id'] != "") { //If button was clicked...
         $temp_key = create_access_token($_POST['user_id'], null, "TEMP"); //Create a temp_key
         $redirect = $_POST['redirect'];
