@@ -80,6 +80,7 @@ ini_set('display_startup_errors', TRUE); // */
 
         div#info {
             flex: 0.25;
+            height: 100%;
             text-align: center;
             color: #606060;
         }
