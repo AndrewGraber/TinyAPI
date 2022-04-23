@@ -40,7 +40,7 @@ ini_set('display_startup_errors', TRUE); // */
         $service_name = $host;
     }
 
-    if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['user_id'] != "") { //If button was clicked...
+    if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['user_id']) && $_POST['user_id'] != "" && isset($_POST['redirect'])) { //If button was clicked...
         $temp_key = create_access_token($_POST['user_id'], null, "TEMP"); //Create a temp_key
         $redirect = $_POST['redirect'];
         session_unset();
