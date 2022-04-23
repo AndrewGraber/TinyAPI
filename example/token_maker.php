@@ -66,16 +66,16 @@ if(isset($_GET['temp_key'])) {
         }
 
         #token_exchange_button {
-            padding: 1em;
-            border: 2px solid #5e89ff;
+            padding: 1.5em;
+            border: 4px solid #5e89ff;
             background-color: #324987;
             color: #dedede;
-            border-radius: 25%;
+            border-radius: 2em;
             transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease;
         }
 
         #token_exchange_button:hover {
-            border: 2px solid #324987;
+            border: 4px solid #324987;
             background-color: #5e89ff;
             color: #324987;
             cursor: pointer;
