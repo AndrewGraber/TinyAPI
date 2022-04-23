@@ -125,9 +125,8 @@ if(isset($_GET['temp_key'])) {
             <h1>Step 2: Token Exchange</h1>
             <p>
                 Once the user has retrieved a temporary key, the app can make a request to the 'get_token' endpoint to exchange
-                the temporary key for an Access Token, which will allow the app to start making requests to the API. This token
-                lasts for 24 hours and can be easily stored in a Cookie. If the token is lost or expired, the user can start the
-                process over to retrieve a new one.
+                the temporary key for an Access Token, which will allow the app to start making requests to the API. This temporary
+                token is only valid for 60 seconds (shown by the timer), so be sure to exchange it quickly!
             </p>
 
             <div>Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found"; ?>" /></div>
@@ -146,7 +145,13 @@ if(isset($_GET['temp_key'])) {
             <div class="bottom-line"></div>
         </div>
         <div>
-
+            <h1>Finish: Access Token</h1>
+            <p>
+                Now the temporary key has been exchanged for a valid Access Token. This token lasts for 24 hours and can be
+                easily stored in a Cookie. If the token is lost or expired, the user can start the process over to retrieve
+                a new one.
+            </p>
+            <input disabled type="text" id="access_token" value="No token found" />
         </div>
     </div>
 <script>
@@ -161,6 +166,10 @@ $(document).ready(function() {
             });
         } catch (error) {
             console.error(error);
+        }
+
+        if(typeof resp !== 'undefined') {
+            console.log(resp);
         }
     });
 });
