@@ -116,7 +116,7 @@ if(isset($_GET['temp_key'])) {
         }
 
         #access_token {
-            width: 70%;
+            width: 70em;
         }
     </style>
 </head>
