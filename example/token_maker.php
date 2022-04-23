@@ -26,6 +26,8 @@ if(isset($_GET['temp_key'])) {
         html, body {
             margin: 0;
             padding: 0;
+            background-color: #474747;
+            color: #dedede;
         }
 
         h1, p {
@@ -110,7 +112,7 @@ if(isset($_GET['temp_key'])) {
 
         .bottom-line {
             width: 80%;
-            border-bottom: 1px solid 
+            border-bottom: 1px solid #dedede;
         }
 
         #access_token {
