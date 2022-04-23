@@ -35,7 +35,7 @@ if(isset($_GET['temp_key'])) {
 
         .mask.full,
         .circle .fill {
-            animation: fill ease-in-out 60s;
+            animation: fill linear 60s;
             transform: rotate(-180deg);
         }
 
