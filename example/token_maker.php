@@ -28,7 +28,7 @@ if(isset($_GET['temp_key'])) {
 
         .mask .fill {
             clip: rect(0px, 50px, 100px, 0px);
-            background-color: #2eaee6;
+            background-color: #5e89ff;
         }
 
         .circle-wrap .circle .mask {
@@ -55,7 +55,7 @@ if(isset($_GET['temp_key'])) {
             height: 100px;
             background: #ebebeb;
             border-radius: 50%;
-            border: 1px solid #9c9c9c;
+            border: 1px solid rgba(232, 232, 232, 0.2);
         }
 
         .container {
@@ -66,7 +66,7 @@ if(isset($_GET['temp_key'])) {
         }
 
         #token_exchange_button {
-            padding: 1.5em;
+            padding: 1em;
             border: 4px solid #5e89ff;
             background-color: #324987;
             color: #dedede;
@@ -79,6 +79,11 @@ if(isset($_GET['temp_key'])) {
             background-color: #5e89ff;
             color: #324987;
             cursor: pointer;
+        }
+
+        .bottom-line {
+            width: 80%;
+            border-bottom: 1px solid 
         }
     </style>
 </head>
@@ -97,6 +102,7 @@ if(isset($_GET['temp_key'])) {
                 <input type="text" name="user_id">
                 <input type="submit" class="button-popup" value="Authorize with TinyAPI">
             </form>
+            <div class="bottom-line"></div>
         </div>
         <div class="container">
             <h1>Step 2: Token Exchange</h1>
@@ -120,6 +126,7 @@ if(isset($_GET['temp_key'])) {
                 </div>
             </div>
             <div id="token_exchange_button">Exchange key for Token</div>
+            <div class="bottom-line"></div>
         </div>
         <div>
 
