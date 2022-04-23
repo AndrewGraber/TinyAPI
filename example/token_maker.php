@@ -162,7 +162,7 @@ $(document).ready(function() {
             resp = await axios.post('/auth/get_token.php', {
                 scopes: ["available"],
                 temp_key: temp_key_str,
-                user_id: 
+                user_id: $("#user_id").val()
             });
         } catch (error) {
             console.error(error);
