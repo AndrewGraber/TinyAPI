@@ -125,7 +125,7 @@ ini_set('display_startup_errors', TRUE); // */
         var temp_key = "<?php echo $temp_key; ?>"; //This will be either an actual temp key (after button is pressed) or an empty string.
         var redirect = "<?php echo $redirect; ?>"; //Taken from the original request to this page
         if(temp_key != "") { //If there is actually a temp_key (button was pressed)
-            window.location.replace(redirect + "?temp_key=" + temp_key + "&user_id=" + $_POST['user_id']); //Redirect back to application page with temp_key in query string.
+            window.location.replace(redirect + "?temp_key=" + temp_key + "&user_id=<?php echo $_POST['user_id']; ?>"); //Redirect back to application page with temp_key in query string.
         }
     </script>
 </body>
