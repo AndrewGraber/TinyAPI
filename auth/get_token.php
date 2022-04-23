@@ -39,7 +39,7 @@ if($request->type == "POST") {
 			remove_temp_key($request->get_data("temp_key")); //Delete the temp_key so it can't be used again
 			$userHasScopeAccess = check_scope_access($request->get_data("alias"), $request->get_data("scopes"), $err, $ret_scope); //check to ensure that the user has access to all the requested scopes
 			if($userHasScopeAccess) {
-				$tokenData = create_access_token($request->get_data("alias"), $request->get_data("scopes"), "BUDA"); //Create a new access token
+				$tokenData = create_access_token($request->get_data("alias"), $request->get_data("scopes"), "TAPI"); //Create a new access token
 				$response->set_status(OK);
 				$response->ok(true);
 				$response->add_data("token", $tokenData);

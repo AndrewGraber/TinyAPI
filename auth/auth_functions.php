@@ -318,7 +318,7 @@ function token_exists($token) {
  * 
  * @param string $user The user_id of the person who made the request for this token
  * @param string[] $scopes An array of the scopes that the created access token should be linked to.
- * @param string $type The type of token to be created. Valid options are: 'TEMP' or 'BUDA'
+ * @param string $type The type of token to be created. Valid options are: 'TEMP' or 'TAPI'
  */
 function create_access_token($user, $scopes, $type) {
 	$conn = new Database();
