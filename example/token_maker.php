@@ -91,8 +91,8 @@ if(isset($_GET['temp_key'])) {
                 process over to retrieve a new one.
             </p>
 
-            Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found. Complete step 1!"; ?>" />
-            user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" />
+            <div>Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found. Complete step 1!"; ?>" /></div>
+            <div>user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" /></div>
             <div class="circle-wrap">
                 <div class="circle">
                     <div class="mask half">
