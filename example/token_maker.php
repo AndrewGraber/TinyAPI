@@ -156,13 +156,15 @@ if(isset($_GET['temp_key'])) {
     </div>
 <script>
 $(document).ready(function() {
+    var user_id = $("#user_id").val();
+    var temp_key = $("#temp_key").val();
     $("#token_exchange_button").click(async (e) => {
         var resp;
         try {
             resp = await axios.post('/auth/get_token.php', {
                 scopes: ["available"],
                 temp_key: temp_key_str,
-                user_id: $("#user_id").val()
+                user_id: user_id
             });
         } catch (error) {
             console.error(error);
