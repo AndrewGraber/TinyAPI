@@ -16,6 +16,7 @@ if(isset($_GET['temp_key'])) {
     <title>Example Token Maker</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js" integrity="sha512-wT7uPE7tOP6w4o28u1DN775jYjHQApdBnib5Pho4RB0Pgd9y7eSkAV1BTqQydupYDB9GBhTcQQzyNMPMV3cAew==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         * {
@@ -156,6 +157,11 @@ if(isset($_GET['temp_key'])) {
     </div>
 <script>
 $(document).ready(function() {
+    var cookie = Cookies.get('access_token');
+    if(typeof cookie !== 'undefined') {
+        $("#access_token").val(cookie);
+    }
+
     var user_id = $("#user_id").val();
     var temp_key = $("#temp_key").val();
     $("#token_exchange_button").click(async (e) => {
@@ -172,6 +178,9 @@ $(document).ready(function() {
 
         if(typeof resp !== 'undefined') {
             console.log(resp);
+            $("#access_token").val(resp.data.token);
+            Cookies.remove('access_token', {path: ''});
+            Cookies.set('access_token', resp.data.token, {expires: 1, path: ''});
         }
     });
 });
