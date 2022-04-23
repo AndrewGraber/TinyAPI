@@ -74,7 +74,7 @@ if(isset($_GET['temp_key'])) {
         .circle-wrap {
             width: 100px;
             height: 100px;
-            background: #ebebeb;
+            background: #474747;
             border-radius: 50%;
             border: 1px solid rgba(232, 232, 232, 0.2);
         }
@@ -100,6 +100,7 @@ if(isset($_GET['temp_key'])) {
             color: #dedede;
             border-radius: 2em;
             transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease;
+            margin-bottom: 1em;
         }
 
         #token_exchange_button:hover {
@@ -107,7 +108,6 @@ if(isset($_GET['temp_key'])) {
             background-color: #5e89ff;
             color: #324987;
             cursor: pointer;
-            margin-bottom: 1em;
         }
 
         .bottom-line {
