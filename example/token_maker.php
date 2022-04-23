@@ -30,6 +30,7 @@ if(isset($_GET['temp_key'])) {
 
         h1, p {
             margin: 0.5em 0;
+            text-align: center;
         }
 
         .space-around {
