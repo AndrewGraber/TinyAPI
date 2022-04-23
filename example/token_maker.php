@@ -111,6 +111,10 @@ if(isset($_GET['temp_key'])) {
             width: 80%;
             border-bottom: 1px solid 
         }
+
+        #access_token {
+            width: 70%;
+        }
     </style>
 </head>
 <body>
@@ -150,17 +154,17 @@ if(isset($_GET['temp_key'])) {
                     </div>
                 </div>
             </div>
-            <div id="token_exchange_button">Exchange key for Token</div>
+            <div class="space-around" id="token_exchange_button">Exchange key for Token</div>
             <div class="bottom-line"></div>
         </div>
-        <div>
+        <div class="container">
             <h1>Finish: Access Token</h1>
             <p>
                 Now the temporary key has been exchanged for a valid Access Token. This token lasts for 24 hours and can be
                 easily stored in a Cookie. If the token is lost or expired, the user can start the process over to retrieve
                 a new one.
             </p>
-            <input disabled type="text" id="access_token" value="No token found" />
+            <div class="space-around">Access Token: <input disabled type="text" id="access_token" value="No token found" /></div>
         </div>
     </div>
 <script>
