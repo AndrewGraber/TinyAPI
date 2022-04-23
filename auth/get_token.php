@@ -25,7 +25,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
 ini_set('display_startup_errors', TRUE); // */
-require_once("../../resources/CAS-1.3.3/CAS.php");
 require_once("auth_functions.php");
 require_once("../objects/Request.php");
 require_once("../objects/Response.php");
