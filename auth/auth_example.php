@@ -45,9 +45,7 @@ ini_set('display_startup_errors', TRUE); // */
     </title>
     <style>
         .button-popup {
-            width: 60%;
             height: 20%;
-            position: absolute;
             top: 40%;
             left: 20%;
             background-color: #d19f2b;
@@ -63,30 +61,51 @@ ini_set('display_startup_errors', TRUE); // */
             border: solid 3px #d19f2b;
         }
 
-        div#disclaimer {
-            width: 90%;
+        .container {
             position: absolute;
-            bottom: 1em;
-            left: 5%;
+            width: 90vw;
+            height: 90vh;
+            top: 5vh;
+            left: 5vh;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form {
+            flex: 0.5;
+        }
+
+        div#info {
+            flex: 0.25;
             text-align: center;
             color: #606060;
+        }
+
+        .blank {
+            flex: 0.25;
         }
     </style>
 </head>
 <body style='background-color: #aaaaaa'>
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <input type="text" style="display: none;" name="redirect" value="<?php echo $_GET['redirect']; ?>">
-        <input type="text" style="display: none;" name="user_id" value="<?php echo $_POST['user_id']; ?>">
-        <input type="submit" class="button-popup" value="Click here to Login to ITaP Labs">
-    </form>
-    <div id="disclaimer">
-        <p>
-            Clicking the button above will use the user_id provided in the POST data to generate a temporary token
-            and redirect you to the url provided in the query string value 'redirect', which is set by whatever site
-            sent you to this one. The temporary token is valid for up to 60 seconds and will be returned in the POST
-            data as 'temp_key'. Once the redirect is complete, the site that made the request for the temporary key
-            can then make a request to get_token.php to trade the temporary key for an access token that lasts 24 hours.
-        </p>
+    <div class="container">
+        <div class="blank"></div>
+        <form method="post" class="form" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <input type="text" style="display: none;" name="redirect" value="<?php echo $_GET['redirect']; ?>">
+            <input type="text" style="display: none;" name="user_id" value="<?php echo $_POST['user_id']; ?>">
+            <input type="submit" class="button-popup" value="Click here to Login to ITaP Labs">
+        </form>
+        <div id="info">
+            <p>
+                Clicking the button above will use the user_id provided in the POST data to generate a temporary token
+                and redirect you to the url provided in the query string value 'redirect', which is set by whatever site
+                sent you to this one. The temporary token is valid for up to 60 seconds and will be returned in the POST
+                data as 'temp_key'. Once the redirect is complete, the site that made the request for the temporary key
+                can then make a request to get_token.php to trade the temporary key for an access token that lasts 24 hours.
+            </p>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script>
