@@ -12,13 +12,13 @@ if(isset($_POST['temp_key'])) {
 
 <html>
 <head>
-    Example Token Maker
+    <title>Example Token Maker</title>
 </head>
 <body>
     <form method="post" action="/auth/access_request.php?redirect=<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>">
         <input type="text" style="display: none;" name="service_name" value="ExampleApp">
         <input type="text" name="user_id">
-        <input type="submit" class="button-popup" value="Login to TinyAPI with <?php echo $service_name; ?>">
+        <input type="submit" class="button-popup" value="Authorize with TinyAPI">
     </form>
 
     <br>
