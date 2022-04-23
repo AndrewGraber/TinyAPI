@@ -55,6 +55,7 @@ ini_set('display_startup_errors', TRUE); // */
     </title>
     <style>
         .button-popup {
+            flex: 100%;
             height: 100%;
             width: 100%;
             background-color: #d19f2b;
@@ -85,6 +86,7 @@ ini_set('display_startup_errors', TRUE); // */
 
         .form {
             flex: 0.5;
+            display: flex;
         }
 
         div#info {
