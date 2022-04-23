@@ -75,7 +75,7 @@ if(isset($_GET['temp_key'])) {
                 <input type="submit" class="button-popup" value="Authorize with TinyAPI">
             </form>
         </div>
-        <div>
+        <div class="container">
             <h1>Temporary Key</h1>
             <p>Value: <?php echo $has_temp_key ? $temp_key : "No temp key retrieved yet. Get one by submitting the form above!"; ?></p>
             <div class="circle-wrap">
