@@ -20,16 +20,12 @@ class Database {
 	 * Creates a new Database object and creates its connection to the mysql database
 	 */
 	public function __construct() {
-		/*$data = json_decode(file_get_contents("db_credentials.json"), true);
-    $this->hostname = $data['hostname'];
+		$data = json_decode(file_get_contents("/var/www/data/db_credentials.json"), true);
+
+		$this->hostname = $data['hostname'];
 		$this->db_name = $data['db_name'];
 		$this->username = $data['username'];
-		$this->password = $data['password'];*/
-   
-    $this->hostname = "localhost";
-    $this->db_name = "dummydashboard";
-    $this->username = "andrew";
-    $this->password = "P3nnyPi3!";
+		$this->password = $data['password'];
 
 		$this->conn = new mysqli($this->hostname, $this->username, $this->password, $this->db_name);
 		//Check connection
