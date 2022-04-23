@@ -7,7 +7,7 @@
  * 
  * scopes - An array of strings that correspond to scopes the requester wishes for this token to contain. Scopes are of the form: [resource].[action].[specifier]
  * temp_key - A temp_key obtained from the {@see \api\auth\cas_auth cas_auth} endpoint. This is a 69-character string starting with 'TEMP-'
- * alias - A string containing the user_id of the employee who the token should be assigned to.
+ * user_id - A string containing the user_id of the user who the token should be assigned to.
  * 
  * The temp_key that was obtained from the {@see \api\auth\cas_auth cas_auth} endpoint will only be valid for 60 seconds after it is created. This is because it
  * should immediately be exchanged through this endpoint for an access token. The access token that is returned from this endpoint will last exactly 24 hours
@@ -33,13 +33,13 @@ require_once("../objects/Response.php");
 $request = new Request();
 $response = new Response();
 if($request->type == "POST") {
-	if($request->has_data("scopes") && $request->has_data("temp_key") && $request->has_data("alias")) { //Check for parameters
-		$userAuthenticated = check_temp_key($request->get_data("temp_key"), $request->get_data("alias")); //Check to see that temp_key is valid
+	if($request->has_data("scopes") && $request->has_data("temp_key") && $request->has_data("user_id")) { //Check for parameters
+		$userAuthenticated = check_temp_key($request->get_data("temp_key"), $request->get_data("user_id")); //Check to see that temp_key is valid
 		if($userAuthenticated) {
 			remove_temp_key($request->get_data("temp_key")); //Delete the temp_key so it can't be used again
-			$userHasScopeAccess = check_scope_access($request->get_data("alias"), $request->get_data("scopes"), $err, $ret_scope); //check to ensure that the user has access to all the requested scopes
+			$userHasScopeAccess = check_scope_access($request->get_data("user_id"), $request->get_data("scopes"), $err, $ret_scope); //check to ensure that the user has access to all the requested scopes
 			if($userHasScopeAccess) {
-				$tokenData = create_access_token($request->get_data("alias"), $request->get_data("scopes"), "TAPI"); //Create a new access token
+				$tokenData = create_access_token($request->get_data("user_id"), $request->get_data("scopes"), "TAPI"); //Create a new access token
 				$response->set_status(OK);
 				$response->ok(true);
 				$response->add_data("token", $tokenData);
@@ -48,7 +48,7 @@ if($request->type == "POST") {
 					$response->set_status(NOT_FOUND);
 					$response->add_data("ok", false);
 					$response->add_data("error", "User was not found");
-					$response->add_data("request_alias", $request->get_data("alias"));
+					$response->add_data("request_user_id", $request->get_data("user_id"));
 				} else if($err == SCOPE_NOT_FOUND) {
 					$response->set_status(NOT_FOUND);
 					$response->add_data("ok", false);
@@ -58,7 +58,7 @@ if($request->type == "POST") {
 					$response->set_status(UNAUTHORIZED);
 					$response->add_data("ok", false);
 					$response->add_data("error", "This user is not permitted access to one of the requested scopes.");
-					$response->add_data("request_alias", $request->get_data("alias"));
+					$response->add_data("request_user_id", $request->get_data("user_id"));
 					$response->add_data("request_scope", $ret_scope);
 				}
 			}
@@ -66,7 +66,7 @@ if($request->type == "POST") {
 			$response->set_status(UNAUTHORIZED);
 			$response->add_data("ok", false);
 			$response->add_data("error", "Login attempt failed! Either temp_key doesn't exist, is expired, or is validated to another user!");
-			$response->add_data("request_alias", $request->get_data("alias"));
+			$response->add_data("request_user_id", $request->get_data("user_id"));
 			$response->add_data("request_temp_key", $request->get_data("temp_key"));
 		}
 	} else { //Request was missing one of the parameters
