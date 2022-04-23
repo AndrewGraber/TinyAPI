@@ -87,6 +87,8 @@ ini_set('display_startup_errors', TRUE); // */
         .form {
             flex: 0.5;
             display: flex;
+            width: 100%;
+            margin-bottom: 5vh;
         }
 
         div#info {
