@@ -28,6 +28,14 @@ if(isset($_GET['temp_key'])) {
             padding: 0;
         }
 
+        h1, p {
+            margin: 0.5em 0;
+        }
+
+        .space-around {
+            margin: 0.25em 0;
+        }
+
         .circle-wrap .circle .mask,
         .circle-wrap .circle .fill {
             width: 100px;
@@ -130,9 +138,9 @@ if(isset($_GET['temp_key'])) {
                 token is only valid for 60 seconds (shown by the timer), so be sure to exchange it quickly!
             </p>
 
-            <div>Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found"; ?>" /></div>
-            <div>user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" /></div>
-            <div class="circle-wrap">
+            <div class="space-around">Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found"; ?>" /></div>
+            <div class="space-around">user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" /></div>
+            <div class="circle-wrap space-around">
                 <div class="circle">
                     <div class="mask half">
                         <div class="fill"></div>
