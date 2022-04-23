@@ -3,9 +3,9 @@
 $has_temp_key = false;
 $temp_key = "";
 
-if(isset($_POST['temp_key'])) {
+if(isset($_GET['temp_key'])) {
     $has_temp_key = true;
-    $temp_key = $_POST['temp_key'];
+    $temp_key = $_GET['temp_key'];
 }
 
 ?>

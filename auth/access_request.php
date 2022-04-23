@@ -114,8 +114,8 @@ ini_set('display_startup_errors', TRUE); // */
             <p>
                 Clicking the button above will use the user_id provided in the POST data to generate a temporary token
                 and redirect you to the url provided in the query string value 'redirect', which is set by whatever site
-                sent you to this one. The temporary token is valid for up to 60 seconds and will be returned in the POST
-                data as 'temp_key'. Once the redirect is complete, the site that made the request for the temporary key
+                sent you to this one. The temporary token is valid for up to 60 seconds and will be returned in the query
+                string as 'temp_key'. Once the redirect is complete, the site that made the request for the temporary key
                 can then make a request to get_token.php to trade the temporary key for an access token that lasts 24 hours.
             </p>
         </div>
