@@ -64,6 +64,22 @@ if(isset($_GET['temp_key'])) {
             justify-content: center;
             align-items: center;
         }
+
+        #token_exchange_button {
+            padding: 1em;
+            border: 2px solid #5e89ff;
+            background-color: #324987;
+            color: #dedede;
+            border-radius: 25%;
+            transition: color 0.2s ease, background-color 0.2s ease, border 0.2s ease;
+        }
+
+        #token_exchange_button:hover {
+            border: 2px solid #324987;
+            background-color: #5e89ff;
+            color: #324987;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +107,7 @@ if(isset($_GET['temp_key'])) {
                 process over to retrieve a new one.
             </p>
 
-            <div>Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found. Complete step 1!"; ?>" /></div>
+            <div>Temporary Key: <input disabled type="text" id="temp_key" value="<?php echo $has_temp_key ? $temp_key : "No temp key found"; ?>" /></div>
             <div>user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" /></div>
             <div class="circle-wrap">
                 <div class="circle">
