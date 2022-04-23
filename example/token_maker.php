@@ -74,6 +74,13 @@ if(isset($_GET['temp_key'])) {
             align-items: center;
         }
 
+        .outer {
+            width: 94vw;
+            height: 94vh;
+            margin-left: 3vw;
+            margin-top: 3vh;
+        }
+
         #token_exchange_button {
             padding: 1em;
             border: 4px solid #5e89ff;
@@ -98,7 +105,7 @@ if(isset($_GET['temp_key'])) {
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container outer">
         <div class="container">
             <h1>Step 1: Authorization</h1>
             <p>
