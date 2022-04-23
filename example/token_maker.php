@@ -68,7 +68,14 @@ if(isset($_GET['temp_key'])) {
 </head>
 <body>
     <div class="container">
-        <div>
+        <div class="container">
+            <h1>Step 1: Authorization</h1>
+            <p>
+                In this first step, the app redirects the user to the 'access_request' page. The app which sent the user
+                will provide their user_id in this request (likely pulled from a session variable, rather than allowing
+                the user to enter it). Once the user authorizes the request, the access_request page will return a temporary
+                key to the url provided by the original app.
+            </p>
             <form method="post" action="/auth/access_request.php?redirect=<?php echo strtok($_SERVER["REQUEST_URI"], '?'); ?>">
                 <input type="text" style="display: none;" name="service_name" value="ExampleApp">
                 <input type="text" name="user_id">
@@ -76,8 +83,16 @@ if(isset($_GET['temp_key'])) {
             </form>
         </div>
         <div class="container">
-            <h1>Temporary Key</h1>
-            <p>Value: <?php echo $has_temp_key ? $temp_key : "No temp key retrieved yet. Get one by submitting the form above!"; ?></p>
+            <h1>Step 2: Token Exchange</h1>
+            <p>
+                Once the user has retrieved a temporary key, the app can make a request to the 'get_token' endpoint to exchange
+                the temporary key for an Access Token, which will allow the app to start making requests to the API. This token
+                lasts for 24 hours and can be easily stored in a Cookie. If the token is lost or expired, the user can start the
+                process over to retrieve a new one.
+            </p>
+
+            Temporary Key: <?php echo $has_temp_key ? $temp_key : "No temp key retrieved yet. Get one by submitting the form above!"; ?></p>
+            user_id on Temp Key: <input disabled type="text" id="user_id" value="<?php echo $user_id; ?>" />
             <div class="circle-wrap">
                 <div class="circle">
                     <div class="mask half">
@@ -88,10 +103,7 @@ if(isset($_GET['temp_key'])) {
                     </div>
                 </div>
             </div>
-            <input <?php echo $user_id == "" ? "disabled" : ""; ?> type="text" id="user_id" value="<?php echo $user_id; ?>" />
-            <div id="token_exchange_button">
-
-            </div>
+            <div id="token_exchange_button">Exchange key for Token</div>
         </div>
         <div>
 
