@@ -163,7 +163,7 @@ $(document).ready(function() {
         try {
             resp = await axios.post('/auth/get_token.php', {
                 scopes: ["available"],
-                temp_key: temp_key_str,
+                temp_key: temp_key,
                 user_id: user_id
             });
         } catch (error) {
