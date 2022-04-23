@@ -36,15 +36,15 @@ if(isset($_GET['temp_key'])) {
         .mask.full,
         .circle .fill {
             animation: fill ease-in-out 60s;
-            transform: rotate(180deg);
+            transform: rotate(-180deg);
         }
 
         @keyframes fill {
             0% {
-                transform: rotate(0deg);
+                transform: rotate(180deg);
             }
             100% {
-                transform: rotate(180deg);
+                transform: rotate(0deg);
             }
         }
 
