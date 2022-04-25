@@ -20,7 +20,7 @@
  * @author Andrew Graber <graber15@purdue.edu>
  */
 
-/*
+//*
 //Error Reporting Remove comments when Debugging 
 error_reporting(E_ALL); 
 ini_set('display_errors', TRUE);
