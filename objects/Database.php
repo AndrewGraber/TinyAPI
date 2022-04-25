@@ -51,6 +51,7 @@ class Database {
 	 * @return array[] An array with each entry being an associative array representing a row returned from the query
 	 */
 	public function select($sql) {
+		echo $sql;
 		$response = $this->conn->query($sql);
 		$result = array();
 		while($row = $response->fetch_assoc()) {
