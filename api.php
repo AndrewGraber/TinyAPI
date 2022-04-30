@@ -12,11 +12,12 @@ require_once("objects/Response.php");
 
 if(isset($_GET['resource'])) {
     $db = new Database();
+    $request = new Request();
     if($_GET['resource'] == 'email') {
         $resource = new Email($db, $_GET['resource']);
     } else {
         $resource = new ApiResource($db, $_GET['resource'], $err);
-        if($err) {
+        if($err && $request->type !== 'PUT') {
             $response = new Response();
             $response->set_status(NOT_FOUND);
             $response->error("Resource not found!");
@@ -24,7 +25,7 @@ if(isset($_GET['resource'])) {
             exit();
         }
     }
-    $resource->handle_request(new Request());
+    $resource->handle_request($request);
 } else {
     $response = new Response();
     $response->set_status(BAD_REQUEST);

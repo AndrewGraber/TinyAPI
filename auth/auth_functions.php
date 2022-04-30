@@ -60,7 +60,7 @@ function req_filter_self($request, $user, $resource) {
 /**
  * This function determines the scope that this request should require and checks to see if the given token has access to that scope.
  * 
- * Determines the resource and action based off of endpoint and request method (GET, POST, PUT, DELTE), so the hardest part is finding
+ * Determines the resource and action based off of endpoint and request method (GET, POST, PATCH, DELTE, PUT), so the hardest part is finding
  * the specifier that should be used. If $has_self is true, checks first to see if the 'self' specifier is valid (request filters only for records that contain their identity)
  * then, if 'self' is invalid for the request or the token does not have that scope, checks 'others' and then finally 'all'. If $has_self is false, will only
  * check for 'all' specifier as that is the only valid specifier.
@@ -68,7 +68,7 @@ function req_filter_self($request, $user, $resource) {
  * @param string $token The access token provided in this request. Used to check its scopes for authorization.
  * @param string $resource_name The name of the resource that the request corresponds to.
  * @param \api\objects\ApiResource $resource The resource object that was created for this request.
- * @param string $method The request method -- valid options are: GET, POST, PUT, DELETE -- must be capitalized
+ * @param string $method The request method -- valid options are: GET, POST, PATCH, DELETE, PUT -- must be capitalized
  * @param string $err A variable used for reporting errors that take place in this function (passed by reference)
  * @param string $err_additional A secondary variable used for reporting specifics of errors that take place
  * @param boolean $has_self Whether or not the given resource's 'has_self' field is true.

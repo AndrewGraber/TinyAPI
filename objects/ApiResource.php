@@ -6,13 +6,14 @@
  * a request, the endpoint will create a new {@see \api\objects\Request Request} object (which sanitizes all input data automatically) and an instance of the 
  * corresponding resource (which is a child of this class) and call {@see \api\objects\ApiResource::handle_request() ApiResource::handle_request()}.
  * ApiResource::handle_request() will automatically check the types and ranges of any fields in the request that the api will use to help ensure errors don't take
- * place. Then, it will determine which handler to run based off the http request method (GET, POST, PUT, DELETE). Below is a list of request types and their corresponding
+ * place. Then, it will determine which handler to run based off the http request method (GET, POST, PATCH, DELETE, PUT). Below is a list of request types and their corresponding
  * handlers:
  * 
  * GET - {@see \api\objects\ApiResource::handle_get() ApiResource::handle_get()} - Used for filtering through records in the database and GETting information about them.
  * POST - {@see \api\objects\ApiResource::handle_post() ApiResource::handle_post()} - Used for creating new records in the database.
- * PUT - {@see \api\objects\ApiResource::handle_put() ApiResource::handle_put()} - Used for modifying existing records in the database.
+ * PATCH - {@see \api\objects\ApiResource::handle_patch() ApiResource::handle_patch()} - Used for modifying existing records in the database.
  * DELETE - {@see \api\objects\ApiResource::handle_delete() ApiResource::handle_delete()} - Used for deleting records in the database.
+ * PUT - {@see \api\objects\ApiResource::handle_put() ApiResource::handle_put()} - Used for creating and modifying resources
  *
  * @package api\objects
  * @license All Rights Reserved
@@ -98,9 +99,9 @@ class ApiResource implements ApiResourceInterface {
 	/**
 	 * @var \api\objects\Database $db          An instance of the database object (used for querying)
 	 * @var string    $table_name              The name (case sensitive) of the table that corresponds to this resource in the database
-	 * @var string    $resource_name              The name of this resource (i.e.: Employee, ApiResource, etc. -- Usually starts with uppercase letter)
-	 * @var string    $snake_name           The name of this resource in lowercase snake case (i.e.: employee, api_resource, etc. -- Used in responses)
-	 * @var string    $snake_name_plural    The plural form of {@see \api\objects\ApiResource::snake_name ApiResource::snake_name}
+	 * @var string    $resource_name           The name of this resource (i.e.: Employee, ApiResource, etc. -- Usually starts with uppercase letter)
+	 * @var string    $snake_name              The name of this resource in lowercase snake case (i.e.: employee, api_resource, etc. -- Used in responses)
+	 * @var string    $snake_name_plural       The plural form of {@see \api\objects\ApiResource::snake_name ApiResource::snake_name}
 	 * @var string    $identifier              The name of the column that can uniquely identify an entry of this resource
 	 * @var int       $default_list_amt        The amount of records that will be shown when listing and no 'limit' parameter is given
 	 * @var int       $max_list                The maximum number of records that can be shown when listing, regardless of 'limit' parameter
@@ -110,7 +111,7 @@ class ApiResource implements ApiResourceInterface {
 	 * @var mixed[]   $field_values            An associative array, with field name as the key, containing all the values of each field for this record. This should not be explicitly defined in a resource class, as it will be filled when the resource is read from the database.
 	 * @var string[]  $post_required           An indexed array listing all fields that are required on a POST request to create a new record.
 	 * @var string[]  $post_optional           An indexed array listing all fields that are optional on a POST request to create a new record.
-	 * @var string[]  $put_options             An indexed array listing all the fields that can be changed via a PUT request
+	 * @var string[]  $patch_options           An indexed array listing all the fields that can be changed via a PATCH request
 	 * @var boolean   $has_self                Boolean that indicates whether this resource is linked to a person. For example, this would be true for {@see \api\objects\Employee Employee} and false for {@see \api\objects\Machine Machine}.
 	 * @var string[]  $self_fields             An indexed array listing all the fields that should contain a user_id. Generally, this will either be empty or will be {"user_id"}. However, some resources do not follow this naming pattern. One example of this is the field "author" in {@see \api\objects\PerformanceReport PerformanceReport}.
 	 */
@@ -128,7 +129,7 @@ class ApiResource implements ApiResourceInterface {
 	protected $field_values; //Automatic
 	protected $post_required; //Automatic
 	protected $post_optional; //Automatic
-	protected $put_options; //Automatic
+	protected $patch_options; //Automatic
 	protected $has_self; //Automatic
 	protected $self_fields; //Automatic
 	
@@ -146,7 +147,7 @@ class ApiResource implements ApiResourceInterface {
 		$this->field_sizes = array();
 		$this->post_required = array();
 		$this->post_optional = array();
-		$this->put_options = array();
+		$this->patch_options = array();
 		$this->has_self = false;
 		$this->self_fields = array();
 
@@ -161,6 +162,7 @@ class ApiResource implements ApiResourceInterface {
 			$this->default_list_amt = $row['DefaultListAmount'];
 			$this->max_list = $row['MaxListAmount'];
 		} else {
+			$this->snake_name = $resource;
 			$err = true;
 		}
 
@@ -202,8 +204,8 @@ class ApiResource implements ApiResourceInterface {
 						$this->post_required[] = $row['Field']; //Because the ID cannot be determined automatically, we must specify it in POST requests.
 					}
 				} else {
-					//Add this as an option for values you can change in PUT requests.
-					$this->put_options[] = $row['Field'];
+					//Add this as an option for values you can change in PATCH requests.
+					$this->patch_options[] = $row['Field'];
 
 					//If this field has a default, then we don't need to require it for POST requests, since it will be set automatically.
 					if(($row['Default'] != NULL || $row['Null'] == "YES") && $row['Comment'] != "required") {
@@ -474,12 +476,14 @@ class ApiResource implements ApiResourceInterface {
 					case "POST":
 						$this->handle_post($request, $response);
 						break;
-					case "PUT":
-						$this->handle_put($request, $response);
+					case "PATCH":
+						$this->handle_patch($request, $response);
 						break;
 					case "DELETE":
 						$this->handle_delete($request, $response);
 						break;
+					case "PUT":
+						$this->handle_put($request, $response);
 					case "OPTIONS":
 						$this->handle_options($request, $response);
 						break;
@@ -686,9 +690,9 @@ class ApiResource implements ApiResourceInterface {
 	}
 	
 	/**
-	 * Handler for requests using 'PUT' http method. Requests using 'PUT' should be used to modify existing records of this resource.
+	 * Handler for requests using 'PATCH' http method. Requests using 'PATCH' are used to modify existing records of this resource.
 	 * 
-	 * The request must contain at least one field listed in this resource's {@see \api\objects\ApiResource::put_options ApiResource::put_options}
+	 * The request must contain at least one field listed in this resource's {@see \api\objects\ApiResource::patch_options ApiResource::patch_options}
 	 * but can contain as many of them as desired. Each of these fields will be modified.
 	 * 
 	 * Additionally, the request MUST contain a value for this resource's {@see \api\objects\ApiResource::identifier ApiResource::identifier} so that the
@@ -696,12 +700,12 @@ class ApiResource implements ApiResourceInterface {
 	 * 
 	 * See {@see \api\objects\ApiResource::handle_request() ApiResource::handle_request()} for more information on the general flow of API requests.
 	 */
-	public function handle_put($request, &$response) {
-		if($request->has_data("_token") && check_perms($request->get_data("_token"), $this->resource_name, $this, "PUT", $err, $err_additional, $this->has_self, $request)) {
+	public function handle_patch($request, &$response) {
+		if($request->has_data("_token") && check_perms($request->get_data("_token"), $this->resource_name, $this, "PATCH", $err, $err_additional, $this->has_self, $request)) {
 			if($request->has_data($this->identifier)) {
 				if($this->read($request->get_data($this->identifier))) {
 					$is_ok = true;
-					foreach($this->put_options as $option) {
+					foreach($this->patch_options as $option) {
 						if($request->has_data($option) && $option != $this->identifier) {
 							if(!$this->edit_field($request->get_data($this->identifier), $option, $request->get_data($option))) {
 								$is_ok = false;
@@ -721,7 +725,7 @@ class ApiResource implements ApiResourceInterface {
 					$response->err_not_found($this->identifier, $request->get_data($this->identifier), $this->snake_name);
 				}
 			} else {
-				$response->err_missing_field($this->identifier, "PUT", $this->snake_name);
+				$response->err_missing_field($this->identifier, "PATCH", $this->snake_name);
 			}
 		} else {
 			$response->set_status(UNAUTHORIZED);
@@ -810,6 +814,56 @@ class ApiResource implements ApiResourceInterface {
 			}
 		}
 	}
+
+	/**
+	 * Handler for requests using 'PUT' http method. Requests using 'PUT' should be used to create and modify resources (their structure, not their records)
+	 * 
+	 * TODO
+	 * The request must contain a value for this resource's {@see \api\objects\ApiResource::identifier ApiResource::identifier} so that the system
+	 * can determine which record to delete. Unfortunately, it is not currently possible to delete more than one record at once, but this is something
+	 * that would be possible to implement if it were to be found necessary.
+	 * 
+	 * See {@see \api\objects\ApiResource::handle_request() ApiResource::handle_request()} for more information on the general flow of API requests.
+	 */
+	public function handle_put($request, &$response) {
+		if($request->has_data("_token") /*&& check_perms($request->get_data("_token"), $this->resource_name, $this, "PUT", $err, $err_additional, false, $request)*/) {
+			$res = $this->db->conn->query("SELECT * FROM APIResourceData WHERE SnakeName = '$resource'");
+			$response->set_status(OK);
+			$response->ok(true);
+			if($res && $res->num_rows > 0) { //Resource Already Exists
+				$row = $res->fetch_assoc();
+				$response->add_data("This request would modify the existing resource '" . $row['ResourceName'] . "'");
+			} else { //Resource Does Not Exist
+				$response->add_data("This request would create a new resource with SnakeName: '" . $this->snake_name . "'");
+			}
+		} else {
+			$response->set_status(UNAUTHORIZED);
+			if(!isset($err)) {
+				$response->error("No access token was provided!");
+			} else {
+				switch($err) {
+					case "NOTOKEN":
+						$response->error("The given access token could not be found");
+						$response->add_data("request_token", $request->get_data("_token"));
+						break;
+					case "EXPIRED":
+						$response->error("The provided token was expired! Please acquire a new token");
+						$response->add_data("expired", $err_additional);
+						break;
+					case "NOSCOPE":
+						$response->error("The permission scope associated with this action could not be found.");
+						$response->add_data("scope", $err_additional);
+						break;
+					case "NOPERM":
+						$response->error("The token you provided does not include the requested action in its scope.");
+						$response->add_data("scope", $err_additional);
+						break;
+					default:
+						$response->error("An unknown error took place during permission check!");
+				}
+			}
+		}
+	}
 	
 	/**
 	 * Handler for requests using 'OPTIONS' http method. Requests using 'OPTIONS' are rarely explicitly made. This handler is in place, because modern browsers
@@ -820,7 +874,7 @@ class ApiResource implements ApiResourceInterface {
 	 */
 	public function handle_options($request, &$response) {
 		header("Access-Control-Allow-Origin: *"); //Allows requests from outside domains to go through
-		header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE"); //These are the only methods that should be allowed
+		header("Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, PUT"); //These are the only methods that should be allowed
 		header("Access-Control-Allow-Headers: Content-Type, Authorization"); //Only allow these headers
 		$response->set_status(OK);
 		$response->add_data("ok", true);

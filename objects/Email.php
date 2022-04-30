@@ -15,7 +15,7 @@ class Email extends ApiResource {
 	protected $defining_fields = array();
 	protected $post_required = array();
 	protected $post_optional = array();
-	protected $put_options = array();
+	protected $patch_options = array();
 	protected $has_self = false;
 
 	function __construct($db) {
@@ -65,7 +65,7 @@ class Email extends ApiResource {
 		}
 	}
 	
-	function handle_put($request, &$response) {
+	function handle_patch($request, &$response) {
 		$response->set_status(NOT_ALLOWED);
 		$response->add_data("ok", false);
 		$response->add_data("error", "Email only accepts POST requests!");
