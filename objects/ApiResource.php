@@ -832,9 +832,9 @@ class ApiResource implements ApiResourceInterface {
 			$response->ok(true);
 			if($res && $res->num_rows > 0) { //Resource Already Exists
 				$row = $res->fetch_assoc();
-				$response->add_data("This request would modify the existing resource '" . $row['ResourceName'] . "'");
+				$response->add_data("info", "This request would modify the existing resource '" . $row['ResourceName'] . "'");
 			} else { //Resource Does Not Exist
-				$response->add_data("This request would create a new resource with SnakeName: '" . $this->snake_name . "'");
+				$response->add_data("info", "This request would create a new resource with SnakeName: '" . $this->snake_name . "'");
 			}
 		} else {
 			$response->set_status(UNAUTHORIZED);
