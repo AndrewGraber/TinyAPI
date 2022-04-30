@@ -827,7 +827,7 @@ class ApiResource implements ApiResourceInterface {
 	 */
 	public function handle_put($request, &$response) {
 		if($request->has_data("_token") /*&& check_perms($request->get_data("_token"), $this->resource_name, $this, "PUT", $err, $err_additional, false, $request)*/) {
-			$res = $this->db->conn->query("SELECT * FROM APIResourceData WHERE SnakeName = '$resource'");
+			$res = $this->db->conn->query("SELECT * FROM APIResourceData WHERE SnakeName = '$this->snake_name'");
 			$response->set_status(OK);
 			$response->ok(true);
 			if($res && $res->num_rows > 0) { //Resource Already Exists
